@@ -1,0 +1,42 @@
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://127.0.0.1/CHATDATABASE', (err) => {
+    if (!err) console.log('mongodb connected!');
+    else console.log('db error ', err);
+})
+
+const Schema = new mongoose.Schema({ name: { type: String } });
+const Name = new mongoose.model('Name', Schema);
+const Lera = new Name({ name: 'Lera' });
+const Ivan = new Name({ name: 'Ivan' });
+const Dasha = new Name({ name: 'Dasha' });
+const Nadya = new Name({ name: 'Nadya' });
+
+
+
+const data = async () => {
+    const result = await Name.find();
+    console.log(result)
+
+    // Метод для поиска одного элемента
+    const findOne = await Name.findOne({ name: 'Ivan' });
+    console.log('findOne ', findOne);
+
+    const find = await Name.find({ name: 'Ivan' });
+    console.log('find ', find);
+
+    // Метод для удаления одного элемента в коллекции
+    const deleteOne = await Name.deleteMany({ name: 'Lera' });
+    console.log('deleteOne', deleteOne);
+
+    // Метод для того, чтобы удалить все элементы в базе данных
+    const deleteMany = await Name.deleteMany();
+    console.log('deleteMany', deleteMany);
+}
+
+data();
+
+Lera.save();
+Ivan.save();
+Dasha.save();
+Nadya.save();

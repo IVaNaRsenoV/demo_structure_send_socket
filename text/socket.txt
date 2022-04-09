@@ -1,0 +1,54 @@
+==============================================================< SERVER >==============================================================
+
+require('dotenv').config();
+const express = require('express'); // Подключаем библиотеку express
+const cors = require('cors'); // Подключаем библиотеку cors
+const { Server } = require('socket.io'); // Подключаем библиотеку socket.io
+const http = require('http'); // Подключаем библиотеку http
+
+const PORT = process.env.PORT || 3000; // Достаём с файла .env адресс порта
+
+const app = express();
+const server = http.createServer(app); // Создаём сервер, внутрь ложим механизм express
+
+// Создаём объект для того, чтобы работать с сокетами
+const io = new Server(server, {
+    cors: '*'
+});
+
+app.use(express.json());
+app.use(cors());
+
+// Подключаем сокет соединение
+io.on('connection', (socket) => {
+    console.log('socket соединён!')
+})
+
+// Слушаем сервер
+server.listen(PORT, () => {
+    console.log(`SERVER WORKED ${PORT}`);
+})
+
+
+
+==============================================================< CLIENT >==============================================================
+
+import React from 'react';
+import io from 'socket.io-client';
+
+const socket = io("ws://localhost:8900"); // Подключаемся к сокет соединению
+
+// Создаём компонент для чата
+const Chat = () => {
+
+    // Создаём разметку для чата
+    return (<></>);
+}
+
+export default Chat;
+
+
+
+==============================================================< PROXY >==============================================================
+
+"proxy":"http://localhost:8900"
